@@ -52,6 +52,16 @@ app.get("/videos/:id", (req, res) => {
         res.send(404);
 });
 app.post("/videos", (req, res) => {
+    if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
+        return res.status(400).send({
+            errorsMessages: [
+                {
+                    message: "Required fields are missing",
+                    field: "title, author, availableResolutions",
+                },
+            ],
+        });
+    }
     const newVideo = {
         id: +new Date(),
         title: req.body.title,
