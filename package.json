@@ -1,0 +1,22 @@
+{
+  "name": "h01API-V1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Sergey-Egorov-web/h01API-V1.git",
+  "author": "Sergey-Egorov-web <ispanezzz.foto@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon --inspect dist/index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
