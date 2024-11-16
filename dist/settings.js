@@ -8,7 +8,7 @@ const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 exports.app = (0, express_1.default)();
 // const port = process.env.PORT || 5000;
-const videos = [
+let videos = [
     {
         id: 1,
         title: "Example video",
@@ -135,6 +135,10 @@ exports.app.delete("/videos/:id", (req, res) => {
         }
     }
     res.send(404);
+});
+exports.app.delete("/testing/all-data", (req, res) => {
+    videos = [];
+    res.send(204);
 });
 // app.listen(port, () => {
 //   console.log(`HO1API-V1 app listening on port ${port}`);

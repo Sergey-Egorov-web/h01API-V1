@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 export const app = express();
 // const port = process.env.PORT || 5000;
 
-const videos = [
+let videos = [
   {
     id: 1,
     title: "Example video",
@@ -146,6 +146,11 @@ app.delete("/videos/:id", (req: Request, res: Response) => {
     }
   }
   res.send(404);
+});
+
+app.delete("/testing/all-data", (req: Request, res: Response) => {
+  videos = [];
+  res.send(204);
 });
 
 // app.listen(port, () => {
