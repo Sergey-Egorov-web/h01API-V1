@@ -32,7 +32,7 @@ const parserMiddleware = bodyParser({});
 app.use(parserMiddleware);
 
 app.get("/", (req: Request, res: Response) => {
-  let helloMessage = "version 0.01!!!";
+  let helloMessage = "version 0.02!!!";
   res.send(helloMessage);
 });
 

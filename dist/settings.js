@@ -33,7 +33,7 @@ let videos = [
 const parserMiddleware = (0, body_parser_1.default)({});
 exports.app.use(parserMiddleware);
 exports.app.get("/", (req, res) => {
-    let helloMessage = "version 0.01!!!";
+    let helloMessage = "version 0.02!!!";
     res.send(helloMessage);
 });
 exports.app.get("/videos", (req, res) => {
