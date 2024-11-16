@@ -32,6 +32,7 @@ let videos = [
 ];
 const parserMiddleware = (0, body_parser_1.default)({});
 exports.app.use(parserMiddleware);
+// app.use(express.json()); // используем вместо bodyParser
 exports.app.get("/", (req, res) => {
     let helloMessage = "version 0.02!!!";
     res.send(helloMessage);
@@ -53,16 +54,17 @@ exports.app.get("/videos/:id", (req, res) => {
         res.send(404);
 });
 exports.app.post("/videos", (req, res) => {
-    // if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
-    //   return res.status(400).send({
-    //     errorsMessages: [
-    //       {
-    //         message: "Required fields are missing",
-    //         field: "title, author, availableResolutions",
-    //       },
-    //     ],
-    //   });
-    // }
+    if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
+        res.status(400).send({
+            errorsMessages: [
+                {
+                    message: "Required fields are missing",
+                    field: "title, author, availableResolutions",
+                },
+            ],
+        });
+        return;
+    }
     const newVideo = {
         id: +new Date(),
         title: req.body.title,
