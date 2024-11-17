@@ -75,7 +75,7 @@ app.post("/videos", (req: Request, res: Response) => {
     title: req.body.title,
     author: req.body.author,
     canBeDownloaded:
-      req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : true, // Default value: true
+      req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : false, // Default value: true
     minAgeRestriction:
       req.body.minAgeRestriction !== undefined
         ? req.body.minAgeRestriction

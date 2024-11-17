@@ -72,7 +72,7 @@ exports.app.post("/videos", (req, res) => {
         id: +new Date(),
         title: req.body.title,
         author: req.body.author,
-        canBeDownloaded: req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : true, // Default value: true
+        canBeDownloaded: req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : false, // Default value: true
         minAgeRestriction: req.body.minAgeRestriction !== undefined
             ? req.body.minAgeRestriction
             : null,

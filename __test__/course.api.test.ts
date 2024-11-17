@@ -31,7 +31,7 @@ describe("/videos", () => {
       id: expect.any(Number),
       title: "new title",
       author: "string",
-      canBeDownloaded: true,
+      canBeDownloaded: false,
       minAgeRestriction: "12",
       // createdAt: expect.any(String),
       createdAt: expect.stringMatching(
@@ -41,6 +41,26 @@ describe("/videos", () => {
         /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/
       ),
       availableResolutions: ["P144"],
+    });
+  });
+  it("shouldn't create new video with incorrect input data", async () => {
+    const response: Response = await request(app)
+      .post("/videos")
+      .send({
+        // title: "",
+        author: "string",
+        minAgeRestriction: "12",
+        availableResolutions: ["P144"],
+      })
+      .expect(400);
+
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "Required fields are missing",
+          field: "title, author, availableResolutions",
+        },
+      ],
     });
   });
 });
