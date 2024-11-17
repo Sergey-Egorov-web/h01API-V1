@@ -52,8 +52,8 @@ describe("/videos", () => {
     const response: Response = await request(app)
       .post("/videos")
       .send({
-        // title: "",
-        author: "string",
+        title: "hop",
+        author: "stringstringstringstringstringstring",
         minAgeRestriction: "12",
         availableResolutions: ["P144"],
       })

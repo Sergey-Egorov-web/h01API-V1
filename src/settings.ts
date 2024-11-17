@@ -5,6 +5,20 @@ import bodyParser from "body-parser";
 export const app = express();
 // const port = process.env.PORT || 5000;
 
+function isValidResolution(resolution: string): boolean {
+  const validResolutions = [
+    "P144",
+    "P240",
+    "P360",
+    "P480",
+    "P720",
+    "P1080",
+    "P1440",
+    "P2160",
+  ];
+  return validResolutions.includes(resolution);
+}
+
 let videos = [
   {
     id: 1,
@@ -54,7 +68,16 @@ app.get("/videos/:id", (req: Request, res: Response) => {
 });
 
 app.post("/videos", (req: Request, res: Response) => {
-  if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
+  if (
+    !req.body.title ||
+    !req.body.author ||
+    !req.body.availableResolutions ||
+    req.body.title.length > 40 ||
+    req.body.author.length > 20 ||
+    !Array.isArray(req.body.availableResolutions) ||
+    req.body.availableResolutions.length === 0 ||
+    !req.body.availableResolutions.every(isValidResolution)
+  ) {
     res.status(400).send({
       errorsMessages: [
         {
