@@ -68,12 +68,28 @@ app.get("/videos/:id", (req: Request, res: Response) => {
 });
 
 app.post("/videos", (req: Request, res: Response) => {
+  // if (
+  //   !req.body.title ||
+  //   !req.body.author ||
+  //   !req.body.availableResolutions ||
+  //   req.body.title.length > 40 ||
+  //   req.body.author.length > 20 ||
+  //   !Array.isArray(req.body.availableResolutions) ||
+  //   req.body.availableResolutions.length === 0 ||
+  //   !req.body.availableResolutions.every(isValidResolution)
+  // ) {
+  //   res.status(400).send({
+  //     errorsMessages: [
+  //       {
+  //         message: "Required fields are missing",
+  //         field: "title, author, availableResolutions",
+  //       },
+  //     ],
+  //   });
+  //   return;
+  // }
+
   if (
-    !req.body.title ||
-    !req.body.author ||
-    !req.body.availableResolutions ||
-    req.body.title.length > 40 ||
-    req.body.author.length > 20 ||
     !Array.isArray(req.body.availableResolutions) ||
     req.body.availableResolutions.length === 0 ||
     !req.body.availableResolutions.every(isValidResolution)
@@ -81,8 +97,31 @@ app.post("/videos", (req: Request, res: Response) => {
     res.status(400).send({
       errorsMessages: [
         {
-          message: "Required fields are missing",
-          field: "title, author, availableResolutions",
+          message: "availableResolutions field is incorrect",
+          field: "availableResolutions",
+        },
+      ],
+    });
+    return;
+  }
+
+  if (!req.body.author || req.body.author.length > 20) {
+    res.status(400).send({
+      errorsMessages: [
+        {
+          message: "Author field is incorrect",
+          field: "author",
+        },
+      ],
+    });
+    return;
+  }
+  if (!req.body.title || req.body.title.length > 40) {
+    res.status(400).send({
+      errorsMessages: [
+        {
+          message: "Title field is incorrect",
+          field: "title",
         },
       ],
     });
