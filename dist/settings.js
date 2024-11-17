@@ -65,6 +65,9 @@ exports.app.post("/videos", (req, res) => {
         });
         return;
     }
+    const createdAt = new Date();
+    const publicationDate = new Date(createdAt);
+    publicationDate.setDate(createdAt.getDate() + 1);
     const newVideo = {
         id: +new Date(),
         title: req.body.title,
@@ -73,8 +76,8 @@ exports.app.post("/videos", (req, res) => {
         minAgeRestriction: req.body.minAgeRestriction !== undefined
             ? req.body.minAgeRestriction
             : null,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        createdAt: createdAt.toISOString(),
+        publicationDate: publicationDate.toISOString(),
         availableResolutions: req.body.availableResolutions,
     };
     videos.push(newVideo);
