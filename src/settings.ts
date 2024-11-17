@@ -75,7 +75,7 @@ app.post("/videos", (req: Request, res: Response) => {
     title: req.body.title,
     author: req.body.author,
     canBeDownloaded:
-      req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : false, // Default value: true
+      req.body.canBeDownloaded !== undefined ? req.body.canBeDownloaded : false, // Default value: false
     minAgeRestriction:
       req.body.minAgeRestriction !== undefined
         ? req.body.minAgeRestriction
@@ -91,8 +91,20 @@ app.post("/videos", (req: Request, res: Response) => {
 app.put("/videos/:id", (req: Request, res: Response) => {
   let video = videos.find((p) => p.id === +req.params.id);
 
+  if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
+    res.status(400).send({
+      errorsMessages: [
+        {
+          message: "Required fields are missing",
+          field: "title, author, availableResolutions",
+        },
+      ],
+    });
+    return;
+  }
+
   if (!video) {
-    res.send(404);
+    res.sendStatus(404);
   } else {
     // const errorsMessages: { message: string; field: string }[] = [];
 
@@ -139,7 +151,9 @@ app.put("/videos/:id", (req: Request, res: Response) => {
     if (req.body.availableResolutions) {
       video.availableResolutions = req.body.availableResolutions.toString();
     }
-    res.status(200).send(video);
+    res.sendStatus(204);
+    // res.status(204).send(video);
+    return;
   }
 });
 
@@ -158,7 +172,3 @@ app.delete("/testing/all-data", (req: Request, res: Response) => {
   videos = [];
   res.send(204);
 });
-
-// app.listen(port, () => {
-//   console.log(`HO1API-V1 app listening on port ${port}`);
-// });

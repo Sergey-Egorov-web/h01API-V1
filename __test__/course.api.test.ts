@@ -1,12 +1,15 @@
 import request, { Response } from "supertest";
 import { app } from "../src/settings";
 import { response } from "express";
+import { create } from "domain";
 
 describe("/", () => {
   it("should return 200 and empty array", () => {
     expect(1).toBe(1);
   });
 });
+
+let createdCourse: any; //-------------------
 
 describe("/videos", () => {
   beforeAll(async () => {
@@ -26,6 +29,8 @@ describe("/videos", () => {
         availableResolutions: ["P144"],
       })
       .expect(201);
+
+    createdCourse = response.body; //-------------------
 
     expect(response.body).toEqual({
       id: expect.any(Number),
@@ -51,6 +56,57 @@ describe("/videos", () => {
         author: "string",
         minAgeRestriction: "12",
         availableResolutions: ["P144"],
+      })
+      .expect(400);
+
+    expect(response.body).toEqual({
+      errorsMessages: [
+        {
+          message: "Required fields are missing",
+          field: "title, author, availableResolutions",
+        },
+      ],
+    });
+  });
+
+  it("should update video by id with correct input Model", async () => {
+    const response: Response = await request(app)
+      .put(`/videos/${createdCourse.id}`)
+
+      .send({
+        title: "string",
+        author: "string",
+        availableResolutions: ["P144"],
+        canBeDownloaded: true,
+        minAgeRestriction: "18",
+      })
+      .expect(204);
+  });
+
+  it("shouldn't update video by id with wrong id", async () => {
+    const response: Response = await request(app)
+      .put("/videos/-5")
+
+      .send({
+        title: "string",
+        author: "string",
+        availableResolutions: ["P144"],
+        canBeDownloaded: true,
+        minAgeRestriction: "18",
+      })
+      .expect(404);
+  });
+
+  it("shouldn't update video by id with wrong input Model", async () => {
+    const response: Response = await request(app)
+      .put(`/videos/${createdCourse.id}`)
+
+      .send({
+        // title: "string",
+        author: "string",
+        availableResolutions: ["P144"],
+        canBeDownloaded: true,
+        minAgeRestriction: "18",
       })
       .expect(400);
 
