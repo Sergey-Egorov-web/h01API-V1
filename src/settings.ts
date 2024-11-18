@@ -138,45 +138,72 @@ app.put("/videos/:id", (req: Request, res: Response) => {
   if (!video) {
     res.sendStatus(404);
     return;
-  }
+  } else {
+    if (
+      !req.body.title ||
+      typeof req.body.title !== "string" ||
+      req.body.title.length > 40
+    ) {
+      errorsMessages.push({
+        message: "Invalid title",
+        field: "title",
+      });
+    }
 
-  if (
-    !req.body.title ||
-    typeof req.body.title !== "string" ||
-    req.body.title.length > 40
-  ) {
-    errorsMessages.push({
-      message: "Invalid title",
-      field: "title",
-    });
-  }
+    if (
+      !req.body.author ||
+      typeof req.body.author !== "string" ||
+      req.body.author.length > 20
+    ) {
+      errorsMessages.push({
+        message: "Invalid author",
+        field: "author",
+      });
+    }
 
-  if (
-    !req.body.author ||
-    typeof req.body.author !== "string" ||
-    req.body.author.length > 20
-  ) {
-    errorsMessages.push({
-      message: "Invalid author",
-      field: "author",
-    });
-  }
+    if (
+      !Array.isArray(req.body.availableResolutions) ||
+      req.body.availableResolutions.length === 0 ||
+      !req.body.availableResolutions.every(isValidResolution)
+    ) {
+      errorsMessages.push({
+        message: "availableResolutions field is incorrect",
+        field: "availableResolutions",
+      });
+    }
 
-  if (
-    !Array.isArray(req.body.availableResolutions) ||
-    req.body.availableResolutions.length === 0 ||
-    !req.body.availableResolutions.every(isValidResolution)
-  ) {
-    errorsMessages.push({
-      message: "availableResolutions field is incorrect",
-      field: "availableResolutions",
-    });
-  }
+    // Проверка поля canBeDownloaded
+    if (typeof req.body.canBeDownloaded !== "boolean") {
+      errorsMessages.push({
+        message: "Invalid canBeDownloaded",
+        field: "canBeDownloaded",
+      });
+    }
 
-  if (errorsMessages.length > 0) {
-    return res.status(400).send({ errorsMessages });
-  }
+    // Проверка поля minAgeRestriction
+    if (
+      typeof req.body.minAgeRestriction !== "number" ||
+      req.body.minAgeRestriction < 0 ||
+      req.body.minAgeRestriction > 18
+    ) {
+      errorsMessages.push({
+        message: "Invalid minAgeRestriction",
+        field: "minAgeRestriction",
+      });
+    }
 
+    // Проверка поля publicationDate
+    if (!Date.parse(req.body.publicationDate)) {
+      errorsMessages.push({
+        message: "Invalid publicationDate",
+        field: "publicationDate",
+      });
+    }
+
+    if (errorsMessages.length > 0) {
+      return res.status(400).send({ errorsMessages });
+    }
+  }
   if (req.body.title) {
     video.title = req.body.title.toString();
   }
