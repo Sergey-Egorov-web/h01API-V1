@@ -112,17 +112,6 @@ exports.app.post("/videos", (req, res) => {
 });
 exports.app.put("/videos/:id", (req, res) => {
     let video = videos.find((p) => p.id === +req.params.id);
-    // if (!req.body.title || !req.body.author || !req.body.availableResolutions) {
-    //   res.status(400).send({
-    //     errorsMessages: [
-    //       {
-    //         message: "Required fields are missing",
-    //         field: "title, author, availableResolutions",
-    //       },
-    //     ],
-    //   });
-    //   return;
-    // }
     const errorsMessages = [];
     if (!video) {
         res.sendStatus(404);
@@ -181,24 +170,37 @@ exports.app.put("/videos/:id", (req, res) => {
             return res.status(400).send({ errorsMessages });
         }
     }
-    if (req.body.title) {
-        video.title = req.body.title.toString();
-    }
-    if (req.body.author) {
-        video.author = req.body.author.toString();
-    }
-    if (req.body.canBeDownloaded) {
-        video.canBeDownloaded = req.body.canBeDownloaded;
-    }
-    if (req.body.minAgeRestriction) {
-        video.minAgeRestriction = req.body.minAgeRestriction;
-    }
-    if (req.body.availableResolutions) {
-        video.availableResolutions = req.body.availableResolutions;
-    }
-    res.sendStatus(204);
+    // video = {
+    (video.title = req.body.title),
+        (video.author = req.body.author),
+        (video.canBeDownloaded =
+            req.body.canBeDownloaded !== undefined
+                ? req.body.canBeDownloaded
+                : false), // Default value: false
+        (video.minAgeRestriction =
+            req.body.minAgeRestriction !== undefined
+                ? req.body.minAgeRestriction
+                : null),
+        (video.publicationDate = req.body.publicationDate),
+        (video.availableResolutions = req.body.availableResolutions),
+        // };
+        // if (req.body.title) {
+        //   video.title = req.body.title.toString();
+        // }
+        // if (req.body.author) {
+        //   video.author = req.body.author.toString();
+        // }
+        // if (req.body.canBeDownloaded) {
+        //   video.canBeDownloaded = req.body.canBeDownloaded;
+        // }
+        // if (req.body.minAgeRestriction) {
+        //   video.minAgeRestriction = req.body.minAgeRestriction;
+        // }
+        // if (req.body.availableResolutions) {
+        //   video.availableResolutions = req.body.availableResolutions;
+        // }
+        res.sendStatus(204);
     // res.status(204).send(video);
-    return;
 });
 exports.app.delete("/videos/:id", (req, res) => {
     for (let i = 0; i < videos.length; i++) {
