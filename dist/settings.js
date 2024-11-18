@@ -170,7 +170,8 @@ exports.app.put("/videos/:id", (req, res) => {
             });
         }
         // Проверка поля publicationDate
-        if (!Date.parse(req.body.publicationDate)) {
+        if (typeof req.body.publicationDate !== "string" ||
+            !Date.parse(req.body.publicationDate)) {
             errorsMessages.push({
                 message: "Invalid publicationDate",
                 field: "publicationDate",
