@@ -188,13 +188,13 @@ exports.app.put("/videos/:id", (req, res) => {
         video.author = req.body.author.toString();
     }
     if (req.body.canBeDownloaded) {
-        video.canBeDownloaded = req.body.canBeDownloaded.toString();
+        video.canBeDownloaded = req.body.canBeDownloaded;
     }
     if (req.body.minAgeRestriction) {
-        video.minAgeRestriction = req.body.minAgeRestriction.toString();
+        video.minAgeRestriction = req.body.minAgeRestriction;
     }
     if (req.body.availableResolutions) {
-        video.availableResolutions = req.body.availableResolutions.toString();
+        video.availableResolutions = req.body.availableResolutions;
     }
     res.sendStatus(204);
     // res.status(204).send(video);
